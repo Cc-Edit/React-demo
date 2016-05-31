@@ -1,0 +1,200 @@
+body {
+   background-image: url("../img/back.jpg");
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0;
+  padding: 30px;
+}
+
+a {
+  color: #4183c4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-family: "Bitstream Vera Sans Mono", Consolas, Courier, monospace;
+  font-size: 12px;
+  margin: 0 2px;
+  padding: 0 5px;
+}
+
+h1, h2, h3, h4 {
+  font-weight: bold;
+  margin: 0 0 15px;
+  padding: 0;
+}
+
+h1 {
+  border-bottom: 1px solid #ddd;
+  font-size: 2.5em;
+  font-weight: bold;
+  margin: 0 0 15px;
+  padding: 0;
+}
+
+h2 {
+  border-bottom: 1px solid #eee;
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 1.5em;
+}
+
+h4 {
+  font-size: 1.2em;
+}
+
+ul {
+  padding-left: 30px;
+}
+
+.bookBox{
+  display: inline-block;
+  float: left;
+  margin: 10px;
+  width: 300px;
+  height: 350px;
+  background-color: #fff;
+  -webkit-box-shadow: 3px 3px 15px;  
+}
+.bookImg{
+  width: 110px;
+  height:140px;
+  margin: 15px 15px 15px 10px;
+  display: inline-block;
+}
+.bookImg img{
+  width: 100%;
+  height: 100%;
+  float: left;
+}
+.bookData{
+  width: 161px;
+  height:140px;
+  margin: 15px 0 15px -10px;
+  display: inline-block;
+  vertical-align: top;
+}
+.bookData h4{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+  margin: 10px 0;
+}
+.bookData label{
+  display: inline-block;
+  width: 30%;
+  text-align: center;
+  font-size: 13px;
+  vertical-align: top;
+}
+.bookData span{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  width: 70%;
+}
+.bookData button{
+  float: left;
+}
+.bookRec{
+  overflow: hidden;
+  width: 280px;
+  height:177px;
+  background-color: #e4e4e4;
+  margin: -13px 10px 0 10px;
+}
+.bookRec p{
+  padding: 10px;
+  margin: 0;
+}
+.bookRec span{
+  text-align: right;
+  margin-right: 10px;
+}
+.testBtn{
+-webkit-animation-name: greenPulse;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+}
+@-webkit-keyframes greenPulse {
+  from { background-color: #749a02; -webkit-box-shadow: 0 0 9px #333; }
+  50% { background-color: #91bd09; -webkit-box-shadow: 0 0 18px #91bd09; }
+  to { background-color: #749a02; -webkit-box-shadow: 0 0 9px #333; }
+}
+a.green.button {
+  margin: 200px 20px;
+  width: 150px;
+  text-align: center;
+  display: inline-block;
+  color: white;
+  border-radius:4px;
+  -webkit-animation-name: greenPulse;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+}
+a.blue.button {
+  margin: 10px 20px;
+  width: 150px;
+  text-align: center;
+  display: inline-block;
+  color: white;
+  border-radius:4px;
+  -webkit-animation-name: greenPulse;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+}
+.bookForm{
+  width: 300px;
+  height: 350px;
+  display: inline-block;
+  float: left;  
+  margin: 10px;
+  background-color: #fff;
+}
+.bookForm label{
+  display: inline-block;
+  width: 30%;
+  margin: 3px 10px;
+}
+.bookForm input{
+  display: inline-block;
+  width: 50%;
+  margin: 3px 10px;
+}
+.bookForm h4{
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  margin: 10px 0;
+}
+.subButton{
+  width: 10%;
+  margin-left: 135px;
+  display: inline-block;
+  text-align: center;
+}
+.showlast{
+  background-color: #e4e4e4;
+  display: inline-block;
+  width: 600px;
+  height: 500px;
+}
+.showlast p{
+  margin: 10px;
+}
+.showlast h4{
+  margin: 10px 50px;
+  color: #ff8800;
+}

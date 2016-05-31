@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>React Tutorial</title>
+    <!-- Not present in the tutorial. Just for basic styling. -->
+    <link rel="stylesheet" href="css/base.css" />
+		<script src="scripts/react.js"></script>
+		<script src="scripts/react-dom.js"></script>
+		<script src="scripts/browser.min.js"></script>
+		<script src="scripts/jquery.min.js"></script>
+		<script src="scripts/marked.min.js"></script>
+  </head>
+  <body>
+    <div id="App"></div>
+    <script type="text/babel">
+        //书籍缩略图组件
+        var BookImg = React.createClass({   //每一个React.createClass都是在创建一个组件，通过返回的组件对象可以在任何地方使用该组件
+            render: function(){         //该方法返回一棵 React 组件树，这棵树最终将会渲染成 HTML 。
+                //这里的 <div> 标签不是真正的 DOM 节点；他们就是一些标记，同样，className也是用来标记class样式表的
+                //下面的<img/>也是标记，this.props指向当前组件的所有属性，此处的url是创建组件时传入的属性，使用组件时</BookImg url="test.html">
+                //此时的this.props.url值为test.html,下面的‘{ }’也可以认为是jsx标记，代表包住的为js代码，方便做一些简单操作。
+                return (
+                    <div className="bookImg"> 
+                        <img src={"img/"+this.props.url} />
+                    </div>
+                );
+            }
+        });
+        //书籍介绍数据
+        var BookData = React.createClass({
+            render: function(){
+                return (
+                    <div className="bookData">
+                        <h4>{this.props.data.name}</h4>
+                        <label>作者：</label><span>{this.props.data.author}</span>
+                        <label>价格：</label><span>{"￥"+this.props.data.price}</span>
+                        <button>点击购买</button>
+                    </div>
+                );
+            }
+        });
+        //推荐或介绍
+        var BookRec = React.createClass({
+            //此处需要适配两种情况：名人点评，内容介绍
+            render: function(){
+                var regData;                                //使用一个变量来承担返回的组件树
+                if(this.props.data.rec.length > 0){         //名人点评
+                        regData = this.props.data.rec.map(  //JSX提供一些简单实用的方法，此处用来遍历数组
+                        function(rec){
+                            return (
+                                <div>
+                                <p>{rec.text}</p>
+                                <span>{"----"+rec.auth}</span>
+                                </div>
+                            );
+                        });
+                    }else{                                  //书籍介绍
+                        regData = <p>{this.props.data.text}</p>     
+                    }
+                //此处要注意：1.regData是js中的变量，所以在使用时需要放在‘{}’内部；
+                //            2.必须而且只能返回一个有效的React元素，如果你的组件是由多个元素构成的，那么你必须在外边包一个顶层 元素
+                //如下：
+                //<div className="bookRec">
+                //  {regData}
+                //</div>
+                //<div>
+                //  test
+                //</div>
+                //这样的返回是无效的，React只允许返回一个有效元素
+                return (
+                    <div className="bookRec">
+                        {regData}
+                    </div>
+                );
+            }
+        });
+        //一本书
+        var BookItem = React.createClass({
+            render: function(){
+                return (
+                    <div className="bookBox">
+                        <BookImg url={this.props.data.url} />
+                        <BookData data={this.props.data}/>
+                        <BookRec data={this.props.data}/>
+                    </div>
+                );
+            }
+        });
+        //列表
+        var BookList = React.createClass({
+            //-----------ADD-----------//
+            //1.getInitialState方法在组件的生命周期中仅执行一次，也就是说只在创建组件时会执行，用于设置组件的 state 。
+            //2.getInitialState方法的返回值，会自动挂载到this.state，也就是此处返回的data数组，在组件的内部可以用this.state.data来访问到他。
+            getInitialState: function() {
+              return {data: []};
+            },
+            //下面新增一个方法，用来从服务端获取数据，使用简单的ajax来获取数据
+            loadDataFromServer: function(){
+                $.ajax({
+                  url: this.props.url,          //在最下面的<BookList url="/api/comments" />中传入的url  
+                  dataType: 'json',
+                  cache: false,
+                  success: function(data) {
+                    //请求成功之后，我们通过this.setState()来更新组件的state
+                    //当组件的state发生改变后，react便会对dom树进行重新渲染，
+                    //但react会比对之前dom树和重新渲染后的dom树，作出最小变更。
+                    this.setState({data: data});
+                  }.bind(this),
+                  error: function(xhr, status, err) {
+                    console.error(this.props.url, status, err.toString());
+                  }.bind(this)
+                });
+            },
+            //--------------ADD-------------//
+            //当form表单提交时，回调此函数刷新数据
+            handleCommentSubmit: function(bookData) {
+                //向服务端推送数据
+                $.ajax({
+                  url: this.props.url,
+                  dataType: 'json',
+                  type: 'POST',
+                  data: bookData,
+                  success: function(data) {
+                    this.setState({data: data});
+                  }.bind(this),
+                  error: function(xhr, status, err) {
+                    console.error(this.props.url, status, err.toString());
+                  }.bind(this)
+                });
+            },
+            //------------ADD END-----------//
+            //我们在下面的方法中使用最简单的轮询来获取最新数据，但实际的开发中会有更好的服务端获取数据的方式
+            //componentDidMount 是一个组件渲染的时候被 React 自动调用的方法。动态更新界面的关键点就是调用 this.setState() 
+            //我们用新的从服务器拿到的评论数组来替换掉老的评论数组，然后 UI 自动更新
+            componentDidMount: function() {
+                this.loadDataFromServer();
+                setInterval(this.loadDataFromServer, this.props.pollInterval);
+            },
+            //---------ADD END---------//
+            render: function(){
+                var bookNodes = this.state.data.map(
+                    function(book){
+                        return (
+                            <BookItem data={book} ></BookItem>
+                        );
+                    });
+                return (
+                    <div className="bookList">
+                        {bookNodes}
+                        <CommentForm onCommentSubmit={this.handleCommentSubmit}/>
+                    </div>
+                );
+            }
+        });
+
+        //-------------ADD-------------//
+        //创建表单组件，用来创建一本书
+        var CommentForm = React.createClass({
+            handleSubmit: function(e) {
+                //和this.props,this.state类似，我们利用 ref 属性给子组件命名，通过 this.refs 引用 DOM 节点
+                e.preventDefault();                    //阻止掉默认submit         
+                var id = this.refs.id.value.trim();
+                var name = this.refs.name.value.trim();
+                var price = this.refs.price.value.trim();
+                var author = this.refs.author.value.trim();
+                var url = this.refs.url.value.trim();
+                var text = this.refs.text.value.trim();
+                var reca = this.refs.reca.value.trim();
+                var rect = this.refs.rect.value.trim();
+                var rec;
+                if(reca ===""){
+                    reca=[];
+                }else{
+                    rec = [{"auth":reca,"text":rect}];
+                }
+                //获取好所有数据之后，我们要使用父级元素的提交事件来提交。
+                this.props.onCommentSubmit({id:id, name:name, price:price, rec:rec, url:url, author: author, text: text});
+                // 提交之后清空表单
+                this.refs.id.value= '';
+                this.refs.name.value= '';
+                this.refs.price.value= '';
+                this.refs.author.value= '';
+                this.refs.url.value= '';
+                this.refs.text.value= '';
+                this.refs.reca.value= '';
+                this.refs.rect.value= '';
+                return;
+            },
+          render: function() {
+            //React使用驼峰命名规范的方式给组件绑定事件处理器。下面的onSubmit并不是html中的提交事件，我们也可以在此认为onSubmit也是react的一个标记，此外还有很多的事件被react用这样的
+            //方式绑定处理函数。另外，一定要注意，return的是jsx模板，并不是真正的html元素，所以在写行内样式时一定要注意
+            return (
+              <form  className="bookForm" onSubmit={this.handleSubmit}>
+              <h4>添加书籍</h4>
+                <label>编号:</label><input type="text" ref="id" placeholder="编号" />
+                <label>书籍名字:</label><input type="text" ref="name" placeholder="书籍名字" />
+                <label>价格:</label><input type="text" ref="price" placeholder="价格" />
+                <label>作者:</label><input type="text" ref="author" placeholder="作者" />
+                <label>封面图片:</label><input type="text" ref="url" placeholder="封面图片" />
+                <label>名人推荐:</label><input type="text" ref="rect" placeholder="名人推荐" />
+                <label>评论者:</label><input type="text" ref="reca" placeholder="评论者" />
+                <label>书籍介绍:</label><input type="text" ref="text" placeholder="书籍介绍" />
+                <input className="subButton" type="submit" style={{marginLeft: 65+'px',marginTop:10+'px'}} value="Post" />
+              </form>
+            );
+          }
+        });
+        //-----------ADD END-----------//
+        
+        
+        // 首先我们将data数据清除掉，给booklist组件传一个url，用来从后台获取数据,一个pollInterval来设置轮询间隔
+        ReactDOM.render(
+                <BookList url="/api/comments" pollInterval={2000} />,  
+                document.getElementById('App')
+            );
+    </script>
+  </body>
+</html>
