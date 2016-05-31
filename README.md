@@ -1,55 +1,22 @@
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
-# React Tutorial
+# React Demo
+此示例仿照react中文站点制作，完成图书系统的增删改查
 
-This is the React comment box example from [the React tutorial](http://facebook.github.io/react/docs/tutorial.html).
+原地址：http://facebook.github.io/react/docs/tutorial.html
 
-## To use
+## 如何使用？
 
-There are several simple server implementations included. They all serve static files from `public/` and handle requests to `/api/comments` to fetch or add data. Start a server with one of the following:
-
-### Node
-
+安装服务端node，执行node server.js   如有异常请根据异常提示安装指定包
 ```sh
 npm install
 node server.js
 ```
 
-### Python
 
-```sh
-pip install -r requirements.txt
-python server.py
-```
+## 声明
 
-### Ruby
-```sh
-ruby server.rb
-```
+在学习react的过程中制作了此demo,希望它能帮你快速掌握react,node
 
-### PHP
-```sh
-php server.php
-```
+不间断更新，会加入最新的技术来实现一些功能，请持续关注。
 
-### Go
-```sh
-go run server.go
-```
 
-### Perl
-
-```sh
-cpan Mojolicious
-perl server.pl
-```
-
-And visit <http://localhost:3000/>. Try opening multiple tabs!
-
-## Changing the port
-
-You can change the port number by setting the `$PORT` environment variable before invoking any of the scripts above, e.g.,
-
-```sh
-PORT=3001 node server.js
-```
