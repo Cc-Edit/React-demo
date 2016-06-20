@@ -22,7 +22,7 @@
     			//此时的this.props.url值为test.html,下面的‘{ }’也可以认为是jsx标记，代表包住的为js代码，方便做一些简单操作。
     			return (
     				<div className="bookImg"> 
-						<img src={"img/"+this.props.url} />
+						<img src={"img/"+this.props.url} />jsx
 					</div>
     			);
     		}
@@ -40,7 +40,7 @@
     			);
     		}
     	});
-    	//推荐或介绍
+    	//推荐或介绍    
     	var BookRec = React.createClass({
     		//此处需要适配两种情况：名人点评，内容介绍
     		render: function(){
@@ -102,7 +102,7 @@
                   dataType: 'json',
                   cache: false,
                   success: function(data) {
-                    //请求成功之后，我们通过this.setState()来更新组件的state
+                    //  .setState()来更新组件的state
                     //当组件的state发生改变后，react便会对dom树进行重新渲染，
                     //但react会比对之前dom树和重新渲染后的dom树，作出最小变更。
                     this.setState({data: data});

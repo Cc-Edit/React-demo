@@ -58,6 +58,7 @@ ul {
 }
 
 .bookBox{
+  position: relative;
   display: inline-block;
   float: left;
   margin: 10px;
@@ -197,4 +198,15 @@ a.blue.button {
 .showlast h4{
   margin: 10px 50px;
   color: #ff8800;
+}
+.delete{
+  font-size: 15px;
+  display: inline-block;
+  border:1px solid red;
+  color: red;
+  border-radius: 50%;
+  padding: 0 7px;
+  position: absolute;
+  right: 5px;
+  top: 2px;
 }
